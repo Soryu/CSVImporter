@@ -24,7 +24,5 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/Flinesoft/CSVImporter.git", :tag => "#{s.version}" }
   s.source_files  = "Sources", "Sources/**/*.swift"
   s.framework  = "Foundation"
-  s.dependency "HandySwift", "~> 1.0"
-  s.dependency "Dschee-FileKit", "~> 2.1.1"
 
 end
