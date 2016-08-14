@@ -14,25 +14,6 @@ import XCTest
 
 class CSVImporterSpec: XCTestCase {
 
-// no more path, using data
-//        func test_calls_onFail_block_with_wrong_() {
-//            let invalidPath = "invalid/path"
-//
-//            var didFail = false
-//            let importer = CSVImporter<[String]>(path: invalidPath)
-//
-//            importer.startImportingRecords { $0 }.onFail {
-//                didFail = true
-//                print("Did fail")
-//            }.onProgress { importedDataLinesCount in
-//                print("Progress: \(importedDataLinesCount)")
-//            }.onFinish { importedRecords in
-//                print("Did finish import, first array: \(importedRecords.first)")
-//            }
-//
-//            expect(didFail).toEventually(beTrue())
-//        }
-
     func test_imports_data_from_CSV_file_without_headers() {
         let e = expectation(description: "")
 
@@ -45,7 +26,7 @@ class CSVImporterSpec: XCTestCase {
         importer.startImportingRecords { recordValues -> [String] in
             return recordValues
         }.onFail {
-            print("Did fail")
+            XCTAssert(false)
             e.fulfill()
         }.onProgress { importedDataLinesCount in
             print("Progress: \(importedDataLinesCount)")
@@ -56,7 +37,8 @@ class CSVImporterSpec: XCTestCase {
         }
         
         waitForExpectations(timeout: 10) { r in
-            assert(recordValues != nil)
+            XCTAssert(recordValues != nil)
+            XCTAssert(recordValues!.count == 2776)
         }
     }
 
@@ -72,7 +54,7 @@ class CSVImporterSpec: XCTestCase {
         importer.startImportingRecords { recordValues -> [String] in
             return recordValues
         }.onFail {
-            print("Did fail")
+            XCTAssert(false)
             e.fulfill()
         }.onProgress { importedDataLinesCount in
             print("Progress: \(importedDataLinesCount)")
@@ -83,9 +65,9 @@ class CSVImporterSpec: XCTestCase {
         }
 
         waitForExpectations(timeout: 10) { r in
-            assert(recordValues != nil)
-            assert(recordValues?.first != nil)
-            assert(recordValues!.first! == [
+            XCTAssert(recordValues != nil)
+            XCTAssert(recordValues?.first != nil)
+            XCTAssert(recordValues!.first! == [
                 "",
                 "Text, with \"comma\"; and 'semicolon'.",
                 "",
@@ -110,7 +92,7 @@ class CSVImporterSpec: XCTestCase {
         }, recordMapper: { (recordValues) -> [String : String] in
             return recordValues
         }).onFail {
-            print("Did fail")
+            XCTAssert(false)
             e.fulfill()
         }.onProgress { importedDataLinesCount in
             print("Progress: \(importedDataLinesCount)")
@@ -121,7 +103,8 @@ class CSVImporterSpec: XCTestCase {
         }
 
         waitForExpectations(timeout: 10) { r in
-            assert(recordValues != nil)
+            XCTAssert(recordValues != nil)
+            XCTAssert(recordValues!.count == 2775)
         }
 
     }
