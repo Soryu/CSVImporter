@@ -276,11 +276,11 @@ private func forEachLine(of stream:InputStream, block:(String) -> ()) {
     let delimData = delimiter.data(using: encoding)!
     var buffer = Data(capacity: chunkSize)
     
-    while stream.hasBytesAvailable {
+    while buffer.count > 0 || stream.hasBytesAvailable {
     
         // Read data chunks from file until a line delimiter is found.
         var range = buffer.range(of: delimData)
-        while range == nil {
+        while range == nil && stream.hasBytesAvailable {
             var tmpData = Data(capacity: chunkSize)
             
             // FIXME: this foo thing is bullshit, but tmpData does not get updated with the values from the stream.
@@ -313,7 +313,10 @@ private func forEachLine(of stream:InputStream, block:(String) -> ()) {
             block(line)
             
             // Remove line (and the delimiter) from the buffer.
-            buffer.removeSubrange(0...range.upperBound)
+            buffer.removeSubrange(0..<range.upperBound)
+        } else if let line = String(data: buffer, encoding:encoding) {
+            block(line)
+            buffer.removeAll()
         }
         
         
