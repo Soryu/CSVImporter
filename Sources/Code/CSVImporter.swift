@@ -7,15 +7,12 @@
 //
 
 import Foundation
-//import FileKit
-//import HandySwift
 
 /// Importer for CSV files that maps your lines to a specified data structure.
 public class CSVImporter<T> {
 
     // MARK: - Stored Instance Properties
 
-    //let csvFile: TextFile
     let data: Data
     let delimiter: String
 
@@ -105,15 +102,10 @@ public class CSVImporter<T> {
                         structuredValuesInLine[element] = valuesInLine[index]
                     }
                     
-                    
-//                    if let structuredValuesInLine = [String: String](keys: recordStructure!, values: valuesInLine) {
-                        let newRecord = closure(recordValues: structuredValuesInLine)
-                        importedRecords.append(newRecord)
+                    let newRecord = closure(recordValues: structuredValuesInLine)
+                    importedRecords.append(newRecord)
 
-                        self.reportProgressIfNeeded(importedRecords)
-//                    } else {
-//                        print("Warning: Couldn't structurize line.")
-//                    }
+                    self.reportProgressIfNeeded(importedRecords)
                 }
             }
 
@@ -141,16 +133,7 @@ public class CSVImporter<T> {
         }
         stream.close()
         
-//        if let csvStreamReader = self.csvFile.streamReader() {
-//            for line in csvStreamReader {
-//                let valuesInLine = readValuesInLine(line)
-//                closure(valuesInLine: valuesInLine)
-//            }
-//
-//            return true
-//        } else {
-//            return false
-//        }
+        // FIXME: importLines always returns true, there is no more file opening that can fail
         return true
     }
 
@@ -303,7 +286,6 @@ private func forEachLine(of stream:InputStream, block:(String) -> ()) {
             // FIXME: this foo thing is bullshit, but tmpData does not get updated with the values from the stream.
             let foo = tmpData.withUnsafeMutableBytes { (bytes: UnsafeMutablePointer<UInt8>)->Data in
                 let numberOfBytes = stream.read(bytes, maxLength: chunkSize)
-                // print("read \(numberOfBytes) bytes from stream")
                 return Data(bytes: bytes, count: numberOfBytes)
             }
             
@@ -336,7 +318,6 @@ private func forEachLine(of stream:InputStream, block:(String) -> ()) {
         
         
     }
-    // return line as? String
 
 }
 

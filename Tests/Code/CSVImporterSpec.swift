@@ -120,8 +120,6 @@ class CSVImporterSpec: XCTestCase {
             e.fulfill()
         }
 
-        //expect(recordValues).toEventuallyNot(beNil(), timeout: 10)
-
         waitForExpectations(timeout: 10) { r in
             assert(recordValues != nil)
         }
